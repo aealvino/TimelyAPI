@@ -2,6 +2,6 @@
 {
     public class SeriesEpisodesDTO
     {
-        public ICollection<EpisodesDTO> Episodes { get; set; }
+        public ICollection<EpisodesDTO>? Episodes { get; set; }
     }
 }

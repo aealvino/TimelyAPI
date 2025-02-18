@@ -9,7 +9,9 @@ namespace SeriesServiceApi.Interfaces.Services
         /// Method for getting all Series
         /// </summary>
         /// <returns>List of SeriesDTO</returns>
-        Task<IEnumerable<SeriesDTO>> GetAllSeries();
+        List<SeriesDTO> GetAllSeries();
+
+        Task<SeriesEpisodesDTO> GetSeries(int id);
 
         /// <summary>
         /// Method for adding a new Series

@@ -2,6 +2,7 @@
 using SeriesServiceApi.DAL.EF;
 using SeriesServiceApi.Interfaces.DataSourse;
 using SeriesServiceApi.Models.DTO;
+using System.Linq.Expressions;
 
 namespace SeriesServiceApi.DataSource
 {
@@ -14,10 +15,11 @@ namespace SeriesServiceApi.DataSource
             DbContext = dbContext;
         }
         protected DbSet<T> Set => DbContext.Set<T>();
-
-        public async Task<IEnumerable<T>> GetElements()
+        public IQueryable<T> GetElements(Expression<Func<T, bool>>? filter = null)
         {
-            return await Set.AsNoTracking().ToListAsync();
+            if (filter is not null)
+                return Set.Where(filter).AsNoTracking();
+            return Set.AsNoTracking();
         }
         public async Task<T> AddAsync(T item)
         {

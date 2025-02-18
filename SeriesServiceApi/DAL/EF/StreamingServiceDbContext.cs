@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SeriesServiceApi.DAL.Configurations;
 using SeriesServiceApi.Models.Entities;
 using System;
+using Mapster;
 
 namespace SeriesServiceApi.DAL.EF
 {

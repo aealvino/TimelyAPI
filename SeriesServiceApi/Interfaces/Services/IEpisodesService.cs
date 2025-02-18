@@ -1,4 +1,6 @@
-﻿using SeriesServiceApi.Models.DTO;
+﻿using SeriesServiceApi.Models.Entities;
+using SeriesServiceApi.Models.DTO;
+
 
 namespace SeriesServiceApi.Interfaces.Services
 {
@@ -8,7 +10,7 @@ namespace SeriesServiceApi.Interfaces.Services
         /// Method for getting all Episodes
         /// </summary>
         /// <returns>List of Episodes</returns>
-        Task<IEnumerable<EpisodesDTO>> GetAllEpisodes();
+        List<EpisodesDTO> GetAllEpisodes();
 
         /// <summary>
         /// Method for adding a new Episode

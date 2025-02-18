@@ -3,63 +3,56 @@ using SeriesServiceApi.DataSource;
 using SeriesServiceApi.Interfaces.DataSourse;
 using SeriesServiceApi.Interfaces.Services;
 using SeriesServiceApi.Models.DTO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Mapster;
+using System.Runtime.CompilerServices;
 
 public class SeriesService : ISeriesService
 {
 
-    private readonly IGenericDataSourse<Series> _SeriesDataSource;
+    private readonly ISeriesDataSourse _SeriesDataSource;
 
-    public SeriesService(IGenericDataSourse<Series> seriesDataSource)
+    public SeriesService(ISeriesDataSourse seriesDataSource)
     {
         _SeriesDataSource = seriesDataSource;
     }
 
-    public async Task<IEnumerable<SeriesDTO>> GetAllSeries()
+    public List<SeriesDTO> GetAllSeries()
     {
-        var series = await _SeriesDataSource.GetElements();
-
-        var seriesDTOs = series.Select(s => new SeriesDTO
-        {
-            Id = s.Id,
-            Title = s.Title,
-            Genre = s.Genre,
-            ReleaseDate = s.ReleaseDate
-        }).ToList();
-
-        return seriesDTOs;
+        return _SeriesDataSource.GetElements()
+            .ProjectToType<SeriesDTO>()
+            .ToList();
     }
+    public async Task<SeriesEpisodesDTO> GetSeries(int id)
+    {
+        var series = await _SeriesDataSource.GetSeriesWithEpisodes(x => x.Id == id)
+            ?? throw new ArgumentException();
 
+        return series.Adapt<SeriesEpisodesDTO>();
+    }
     public async Task<int> AddSeries(SeriesDTO seriesDTO)
     {
-        var series = new Series(seriesDTO.Title, seriesDTO.Genre, seriesDTO.ReleaseDate, 0);
-        await _SeriesDataSource.AddAsync(series);
+        var series = seriesDTO.Adapt<Series>();
+        series = await _SeriesDataSource.AddAsync(series);
         await _SeriesDataSource.SaveChangesAsync();
         return series.Id;
     }
 
     public async Task<int> UpdateSeries(SeriesDTO seriesDTO)
     {
-        var seriesList = await _SeriesDataSource.GetElements();
-        var existingSeries = seriesList.FirstOrDefault(s => s.Id == seriesDTO.Id);
-
-        existingSeries.Title = seriesDTO.Title;
-        existingSeries.Genre = seriesDTO.Genre;
-        existingSeries.ReleaseDate = seriesDTO.ReleaseDate;
-
-        await _SeriesDataSource.UpdateBase(existingSeries);
+        var series = seriesDTO.Adapt<Series>();
+        await _SeriesDataSource.UpdateBase(series);
         await _SeriesDataSource.SaveChangesAsync();
-
-        return existingSeries.Id;
+        return series.Id;
     }
     public async Task<int> DeleteSeries(int id)
     {
-        var list = await _SeriesDataSource.GetElements();
-        var seriesToDelete = list.FirstOrDefault(c => c.Id == id);
+        var allSeries = _SeriesDataSource.GetElements();
+        var seriesToDelete = allSeries.FirstOrDefault(allSeries => allSeries.Id == id);
+
+        if (seriesToDelete == null) throw new InvalidOperationException();
+
         await _SeriesDataSource.RemoveAsync(seriesToDelete);
         await _SeriesDataSource.SaveChangesAsync();
-        return id;
+        return seriesToDelete.Id;
     }
 }

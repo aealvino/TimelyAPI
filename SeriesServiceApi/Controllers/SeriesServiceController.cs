@@ -15,16 +15,21 @@ namespace SeriesServiceApi.Controllers
             _seriesService = seriesService;
         }
 
-        [HttpGet(Name = "GetSeriesService")]
-        public async Task<IEnumerable<SeriesDTO>> GetAllSeries()
+        [HttpGet(Name = "GetSeries")]
+        public async Task<List<SeriesDTO>> GetAllSeries()
         {
-            return await _seriesService.GetAllSeries();
+            return await Task.FromResult(_seriesService.GetAllSeries());
+        }
+        [HttpGet("Series/{id}")]
+        public async Task<SeriesEpisodesDTO> GetSeries([FromRoute] int id)
+        {
+            return await _seriesService.GetSeries(id);
         }
 
         [HttpPost(Name = "PostSeries")]
-        public async Task<int> AddSeries([FromBody] SeriesDTO seriesDTO)
+        public async Task<int> AddSeries([FromBody] SeriesDTO series)
         {
-            return await _seriesService.AddSeries(seriesDTO);
+            return await _seriesService.AddSeries(series);
         }
         [HttpPut(Name = "PutSeries: {id}")]
         public async Task<int> UpdateSeries([FromBody] SeriesDTO seriesDTO)
