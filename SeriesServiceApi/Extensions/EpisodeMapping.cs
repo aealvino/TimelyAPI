@@ -1,6 +1,6 @@
 ﻿using Mapster;
-using SeriesServiceApi.Models.Entities;
-using SeriesServiceApi.Models.DTO;
+using Models.Entities;
+using Models.DTO;
 
 namespace SeriesServiceApi.Extensions
 {
@@ -13,10 +13,11 @@ namespace SeriesServiceApi.Extensions
 
         private static void EpisodesMapping(this IApplicationBuilder app)
         {
-            TypeAdapterConfig<EpisodesDTO, Episodes>.NewConfig()
-                .Ignore(dest => dest.Series); // Убираем автоматическое создание Series
+            TypeAdapterConfig<Episode, EpisodeDTO>.NewConfig()
+                .Map(dest => dest.TitleSeries, src => src.Series.Title);
 
-
+            TypeAdapterConfig<EpisodeDTO, Episode>.NewConfig()
+                .Ignore(dest => dest.Series);
         }
     }
 }

@@ -1,12 +1,10 @@
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using SeriesServiceApi.DAL.EF;
-using SeriesServiceApi.DataSource;
+using DAL.EF;
+using DAL.DataSource;
+using Abstraction.Interfaces.DataSourse;
+using Abstraction.Interfaces.Services;
 using SeriesServiceApi.Extensions;
-using SeriesServiceApi.Interfaces.DataSourse;
-using SeriesServiceApi.Interfaces.Services;
 using SeriesServiceApi.Services;
-using System.Runtime.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +23,7 @@ builder.Services.AddScoped<IEpisodesService, EpisodesService>();
 builder.Services.AddDbContext<StreamingServiceDbContext>(
     options =>
     {
-        options.UseSqlite("Data Source=DatabaseApi.db");
+        options.UseSqlite("Data Source=../DatabaseApi.db");
     });
 
 var app = builder.Build();
