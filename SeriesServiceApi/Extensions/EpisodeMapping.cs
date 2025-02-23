@@ -8,16 +8,20 @@ namespace SeriesServiceApi.Extensions
     {
         public static void InitMapping(this IApplicationBuilder app)
         {
-            app.EpisodesMapping();
+            app.AppMapping();
         }
 
-        private static void EpisodesMapping(this IApplicationBuilder app)
+        private static void AppMapping(this IApplicationBuilder app)
         {
             TypeAdapterConfig<Episode, EpisodeDTO>.NewConfig()
                 .Map(dest => dest.TitleSeries, src => src.Series.Title);
 
             TypeAdapterConfig<EpisodeDTO, Episode>.NewConfig()
                 .Ignore(dest => dest.Series);
+
+            TypeAdapterConfig<UserForRegistrationDTO, AppUser>
+                .NewConfig()
+                .Map(dest => dest.UserName, src => src.Email);
         }
     }
 }
