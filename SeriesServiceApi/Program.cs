@@ -5,6 +5,7 @@ using Abstraction.Interfaces.DataSourse;
 using Abstraction.Interfaces.Services;
 using SeriesServiceApi.Extensions;
 using SeriesServiceApi.Services;
+using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,16 +20,20 @@ builder.Services.AddScoped(typeof(ISeriesDataSourse), typeof(SeriesDataSourse));
 builder.Services.AddScoped<ISeriesService, SeriesService>();
 builder.Services.AddScoped<IEpisodesService, EpisodesService>();
 
-
 builder.Services.AddDbContext<StreamingServiceDbContext>(
     options =>
     {
         options.UseSqlite("Data Source=../DatabaseApi.db");
     });
 
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
+builder.Services.AddLogger();
+
 var app = builder.Build();
 
 
+app.AddExceptionHandler();
 app.InitMapping();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -37,8 +42,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 
+app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();

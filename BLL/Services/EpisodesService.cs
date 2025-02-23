@@ -36,8 +36,7 @@ namespace SeriesServiceApi.Services
         }
         public async Task<int> DeleteEpisode(int id)
         {
-            var episodeToDelete = _EpisodesDataSource.GetElements().FirstOrDefault(x => x.Id == id)
-                ?? throw new InvalidOperationException("Element with current id is not found");
+            var episodeToDelete = _EpisodesDataSource.GetElements().FirstOrDefault(x => x.Id == id);
             await _EpisodesDataSource.RemoveAsync(episodeToDelete);
             await _EpisodesDataSource.SaveChangesAsync();
             return id;
