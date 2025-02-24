@@ -38,32 +38,28 @@ namespace SeriesServiceApi.Controllers
 
             if (!result.Succeeded)
             {
-                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                throw new Exception($"User creation failed: {errors}");
+                throw new Exception($"User creation failed");
             }
-
             return userForRegistration;
         }
         [HttpPost("login")]
         public async Task<string> Login([FromBody] UserForLoginDTO userForLogin)
         {
             var user = await _userManager.FindByEmailAsync(userForLogin.Email);
-            if (user == null)
-            {
-                return "Invalid login attempt.";
-            }
+            if (user == null) return "Invalid login attempt.";
 
             var result = await _signInManager.PasswordSignInAsync(user, userForLogin.Password, false, false);
 
-            if (!result.Succeeded)
-            {
-                return "Invalid login attempt.";
-            }
-
-            // Если вход успешен
+            if (!result.Succeeded) return "Invalid login attempt.";
+            
             return "Login successful";
         }
-
+        [HttpPost("logout")]
+        public async Task<string> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return "Logout successful";
+        }
 
     }
 }
