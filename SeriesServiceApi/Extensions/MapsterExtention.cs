@@ -4,7 +4,7 @@ using Models.DTO;
 
 namespace SeriesServiceApi.Extensions
 {
-    public static class EpisodeMapping
+    public static class MapsterExtention
     {
         public static void InitMapping(this IApplicationBuilder app)
         {
