@@ -3,46 +3,41 @@ using Models.Entities;
 
 namespace SeriesServiceApi.Services
 {
-    public class IdentitySeeder
+    public static class IdentitySeeder
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<AppUser> _userManager;
-
-        public IdentitySeeder(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
+        public static async Task SeedAsync(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            _roleManager = roleManager;
-            _userManager = userManager;
-        }
 
-        public async Task SeedAsync()
-        {
+            string email = "superadmin@example.com";
+            string password = "SuperAdmin123!";
+            string roleName = "SuperAdmin";
+
+
             string[] roles = { "SuperAdmin", "Admin", "User" };
 
-            foreach (var role in roles)
+            if (!await roleManager.RoleExistsAsync(roleName))
             {
-                if (!await _roleManager.RoleExistsAsync(role))
-                {
-                    await _roleManager.CreateAsync(new IdentityRole(role));
-                }
+                await roleManager.CreateAsync(new IdentityRole(roleName));
             }
-            var superAdminEmail = "superadmin@example.com";
-            var superAdmin = await _userManager.FindByEmailAsync(superAdminEmail);
 
-            if (superAdmin == null)
+            var superAdminEmail = "superadmin@example.com";
+
+            var user = await userManager.FindByEmailAsync(email);
+
+            if (user == null)
             {
-                var user = new AppUser
+                user = new AppUser
                 {
-                    UserName = superAdminEmail,
-                    Email = superAdminEmail,
-                    EmailConfirmed = true,
-                    FullName = "Super Admin"
+                    UserName = email,
+                    Email = email,
+                    FullName = "Главный Админ",
+                    EmailConfirmed = true
                 };
 
-                var result = await _userManager.CreateAsync(user, "SuperAdmin123!");
-
+                var result = await userManager.CreateAsync(user, password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "SuperAdmin");
+                    await userManager.AddToRoleAsync(user, roleName);
                 }
             }
         }

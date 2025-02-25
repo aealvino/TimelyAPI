@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Models.DTO
 {
-    public class UserForRegistrationDTO
+    public class RegistrationModel
     {
         public string FullName { get; set; }
 

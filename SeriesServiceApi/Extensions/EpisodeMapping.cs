@@ -19,7 +19,7 @@ namespace SeriesServiceApi.Extensions
             TypeAdapterConfig<EpisodeDTO, Episode>.NewConfig()
                 .Ignore(dest => dest.Series);
 
-            TypeAdapterConfig<UserForRegistrationDTO, AppUser>
+            TypeAdapterConfig<RegistrationModel, AppUser>
                 .NewConfig()
                 .Map(dest => dest.UserName, src => src.Email);
         }

@@ -5,11 +5,11 @@ using Mapster;
 
 namespace SeriesServiceApi.Services
 {
-    public class EpisodesService : IEpisodesService
+    public class EpisodeService : IEpisodesService
     {
         private readonly IGenericDataSourse<Episode> _EpisodesDataSource;
 
-        public EpisodesService(IGenericDataSourse<Episode> seriesDataSource)
+        public EpisodeService(IGenericDataSourse<Episode> seriesDataSource)
         {
             _EpisodesDataSource = seriesDataSource;
         }

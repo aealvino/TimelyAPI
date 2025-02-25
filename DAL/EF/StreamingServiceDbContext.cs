@@ -11,8 +11,6 @@ namespace DAL.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.ApplyConfiguration(new SeriesConfig());
-            
             base.OnModelCreating(modelBuilder);
 
             var applicationContextAssembly = typeof(StreamingServiceDbContext).Assembly;
