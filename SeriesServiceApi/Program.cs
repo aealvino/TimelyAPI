@@ -60,6 +60,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:HelloWorld!"]))
         };
     });
+
 builder.Services.AddAuthorization();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
