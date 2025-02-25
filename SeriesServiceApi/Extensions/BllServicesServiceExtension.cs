@@ -1,5 +1,7 @@
 ﻿using Abstraction.Interfaces.DataSourse;
 using Abstraction.Interfaces.Services;
+using BLL.Services;
+using MapsterMapper;
 using SeriesServiceApi.Services;
 
 namespace SeriesServiceApi.Extensions
@@ -10,6 +12,8 @@ namespace SeriesServiceApi.Extensions
         {
             services.AddScoped<ISeriesService, SeriesService>();
             services.AddScoped<IEpisodesService, EpisodesService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddSingleton<IMapper, Mapper>();
         }
     }
 }
