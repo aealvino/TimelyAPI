@@ -13,6 +13,8 @@ namespace SeriesServiceApi.Extensions
             services.AddScoped<ISeriesService, SeriesService>();
             services.AddScoped<IEpisodesService, EpisodesService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ITokenService, TokenService>();
             services.AddSingleton<IMapper, Mapper>();
         }
     }
