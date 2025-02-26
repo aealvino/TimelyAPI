@@ -15,6 +15,7 @@ namespace SeriesServiceApi.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<ISeedService, SeedService>();
             services.AddSingleton<IMapper, Mapper>();
         }
     }

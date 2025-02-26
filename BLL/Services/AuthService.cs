@@ -31,7 +31,9 @@ namespace BLL.Services
             if (user == null || !await _userManager.CheckPasswordAsync(user, userForLogin.Password))
                 throw new Exception("Invalid email or password");
 
-            var token = _tokenService.GenerateAccessToken(user);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var token = _tokenService.GenerateAccessToken(user, roles);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 

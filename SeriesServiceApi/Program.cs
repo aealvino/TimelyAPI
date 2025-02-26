@@ -3,6 +3,7 @@ using SeriesServiceApi.Extensions;
 using NLog.Web;
 using DAL.EF;
 using Models.Entities;
+using Abstraction.Interfaces.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -52,6 +53,12 @@ builder.Services.AddLogger();
 
 var app = builder.Build();
 
+
+using (var scope = app.Services.CreateScope())
+{
+    var seedService = scope.ServiceProvider.GetRequiredService<ISeedService>();
+    await seedService.SeedUsersAndRolesAsync();
+}
 app.AddExceptionHandler();
 app.InitMapping();
 

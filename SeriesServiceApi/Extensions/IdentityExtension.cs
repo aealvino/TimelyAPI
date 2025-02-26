@@ -1,5 +1,7 @@
-﻿using DAL.EF;
+﻿using Abstraction.Interfaces.Services;
+using DAL.EF;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Models.Entities;
 using System;
 
@@ -9,7 +11,7 @@ namespace SeriesServiceApi.Extensions
     {
         public static void AddIdentityServices(this IServiceCollection services)
         {
-            services.AddIdentity<AppUser, IdentityRole>(options =>
+            services.AddIdentity<AppUser, AppRole>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;

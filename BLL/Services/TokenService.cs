@@ -1,4 +1,5 @@
 ﻿using Abstraction.Interfaces.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Models.DTO;
@@ -15,18 +16,22 @@ namespace BLL.Services
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _config;
-
         public TokenService(IConfiguration config)
         {
             _config = config;
         }
 
-        public JwtSecurityToken GenerateAccessToken(AppUser user)
+        public JwtSecurityToken GenerateAccessToken(AppUser user, IList<string> roles)
         {
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, user.Email)
             };
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var token = new JwtSecurityToken(
                 issuer: _config["JwtSettings:Issuer"],
