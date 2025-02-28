@@ -1,6 +1,4 @@
 ﻿using Abstraction.Interfaces.Services;
-using BLL.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTO.YourNamespace.DTOs;
 

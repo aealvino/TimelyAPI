@@ -2,14 +2,8 @@
 using MapsterMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 using Models.DTO.YourNamespace.DTOs;
 using Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL.Services
 {
@@ -32,6 +26,7 @@ namespace BLL.Services
 
             if (!result.Succeeded)
                 throw new Exception("Failed to register a user");
+            await _userManager.AddToRoleAsync(user, "User");
 
             return StatusCodes.Status200OK;
         }

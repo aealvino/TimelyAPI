@@ -9,6 +9,5 @@ namespace Models.Entities
 {
     public class AppUser : IdentityUser
     {
-
     }
 }

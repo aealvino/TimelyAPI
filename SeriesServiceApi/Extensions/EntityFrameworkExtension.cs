@@ -1,7 +1,5 @@
 ﻿using DAL.EF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System;
 
 namespace SeriesServiceApi.Extensions
 {

@@ -1,9 +1,6 @@
 ﻿using Abstraction.Interfaces.Services;
 using Microsoft.AspNetCore.Identity;
 using Models.Entities;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BLL.Services
 {

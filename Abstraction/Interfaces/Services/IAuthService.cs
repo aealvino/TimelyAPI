@@ -10,6 +10,6 @@ namespace Abstraction.Interfaces.Services
 {
     public interface IAuthService
     {
-        Task<string> LoginUser(LoginDto userForLogin);
+        Task<AuthResponseDTO> LoginUser(LoginDto userForLogin);
     }
 }

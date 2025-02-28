@@ -1,9 +1,6 @@
-﻿using Abstraction.Interfaces.Services;
-using DAL.EF;
+﻿using DAL.EF;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
 using Models.Entities;
-using System;
 
 namespace SeriesServiceApi.Extensions
 {

@@ -147,37 +147,37 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "71523b0a-f5c7-4f41-83e0-317d32c6aaee",
+                            Id = "2d438e66-35c6-4cd2-b026-e5d3a94efbaf",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "e79e1575-e0bc-4e1b-a277-7781e491266d",
+                            Id = "101320e0-7cc5-406f-b454-ecddff042a1e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "72b988f2-5faa-453c-8e16-a7f9d8fffa90",
+                            Id = "68a7733d-9cba-4815-9b58-cebdcb4962a3",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "20a64ac9-513d-47ed-b861-fc08b3892493",
+                            Id = "9adc2465-f716-4d2d-a061-97a856c3dbdd",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "6b1dd32b-7a01-4ad4-beed-a2baeeb8ab99",
+                            Id = "7b882da3-395a-4dc4-a6b2-eb85438f40ee",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "07cc1234-8f64-40ef-b1b6-9d5c3be7316b",
+                            Id = "a91e7b16-e15e-4ce7-b5f2-2fd61290e7f8",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         });

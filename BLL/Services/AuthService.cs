@@ -12,19 +12,15 @@ namespace BLL.Services
     public class AuthService : IAuthService
     {
         private readonly ITokenService _tokenService;
-        private readonly IConfiguration _config;
         private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
 
-        public AuthService(ITokenService tokenService, IConfiguration config, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+        public AuthService(ITokenService tokenService, UserManager<AppUser> userManager)
         {
             _tokenService = tokenService;
-            _config = config;
             _userManager = userManager;
-            _signInManager = signInManager;
         }
 
-        public async Task<string> LoginUser(LoginDto userForLogin)
+        public async Task<AuthResponseDTO> LoginUser(LoginDto userForLogin)
         {
             var user = await _userManager.FindByEmailAsync(userForLogin.Email);
 
@@ -32,12 +28,14 @@ namespace BLL.Services
                 throw new Exception("Invalid email or password");
 
             var roles = await _userManager.GetRolesAsync(user);
-
             var token = _tokenService.GenerateAccessToken(user, roles);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return tokenString;
+            return new AuthResponseDTO
+            {
+                AccessToken = tokenString
+            };
         }
     }
 }

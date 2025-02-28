@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-
-namespace Abstraction.Interfaces.Logger
+﻿namespace Abstraction.Interfaces.Logger
 {
     public interface ILoggerManager
     {

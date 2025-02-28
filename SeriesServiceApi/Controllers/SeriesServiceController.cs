@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SeriesServiceApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class SeriesServiceController : ControllerBase

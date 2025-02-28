@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Identity;
+
 using SeriesServiceApi.Extensions;
 using NLog.Web;
-using DAL.EF;
-using Models.Entities;
 using Abstraction.Interfaces.Services;
 
 var builder = WebApplication.CreateBuilder(args);
