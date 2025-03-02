@@ -7,5 +7,6 @@ namespace Abstraction.Interfaces.Services
     public interface ITokenService
     {
         JwtSecurityToken GenerateAccessToken(AppUser user, IList<string> roles);
+        string GenerateRefreshToken();
     }
 }

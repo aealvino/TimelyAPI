@@ -1,10 +1,15 @@
 ﻿using Abstraction.Interfaces.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Identity;
 using Models.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
+using System;
+using DAL.EF;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BLL.Services
 {
@@ -40,5 +45,11 @@ namespace BLL.Services
 
             return token;
         }
+
+        public string GenerateRefreshToken()
+        {
+            return Guid.NewGuid().ToString();
+        }
+
     }
 }

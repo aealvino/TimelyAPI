@@ -11,5 +11,6 @@ namespace Abstraction.Interfaces.Services
     public interface IAuthService
     {
         Task<AuthResponseDTO> LoginUser(LoginDto userForLogin);
+        Task<AuthResponseDTO> RefreshToken(string refreshToken);
     }
 }
