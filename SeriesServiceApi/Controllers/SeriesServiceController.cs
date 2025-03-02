@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SeriesServiceApi.Controllers
 {
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class SeriesServiceController : ControllerBase
@@ -57,7 +58,7 @@ namespace SeriesServiceApi.Controllers
         /// </summary>
         /// <param name="seriesDTO"></param>
         [HttpDelete("delete-series")]
-        [Authorize(Roles = "User")]
+        [Authorize]
         public async Task<int> DeleteSeries(int id)
         {
             return await _seriesService.DeleteSeries(id);

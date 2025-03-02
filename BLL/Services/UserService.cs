@@ -9,7 +9,7 @@ using Abstraction.Interfaces.Services;
 using MapsterMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Models.DTO;
+using Models.DTO.YourNamespace.DTOs;
 using Models.Entities;
 
 namespace BLL.Services
@@ -21,31 +21,23 @@ namespace BLL.Services
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
 
-
-        public UserService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper, ITokenService tokenService)
+        public UserService(UserManager<AppUser> userManager, IMapper mapper)
         {
+            _userManager = userManager;
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
         }
-        public async Task<int> RegisterUser(RegistrationModel userForRegistration)
+        public async Task<int> RegisterUser(RegistrationDto registrationDto)
         {
-            if (await _userManager.FindByEmailAsync(userForRegistration.Email) == null)
-            {
-                throw new Exception("User with this email exists already");
-            }
-
-            var user = _mapper.Map<AppUser>(userForRegistration);
-            user.UserName = userForRegistration.Email;
-            user.EmailConfirmed = true;
-
-            var result = await _userManager.CreateAsync(user, userForRegistration.Password);
+            if (registrationDto == null)
+                throw new Exception("You've missed field");
+            var user = _mapper.Map<AppUser>(registrationDto);
+            var result = await _userManager.CreateAsync(user, registrationDto.Password);
 
             if (!result.Succeeded)
-            {
-                throw new Exception("Failed to create user");
-            }
+                throw new Exception("Failed to register a user");
             await _userManager.AddToRoleAsync(user, "User");
             await _signInManager.PasswordSignInAsync(user, "User", isPersistent:true, lockoutOnFailure:true);
 

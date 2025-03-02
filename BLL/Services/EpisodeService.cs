@@ -37,6 +37,10 @@ namespace SeriesServiceApi.Services
         public async Task<int> DeleteEpisode(int id)
         {
             var episodeToDelete = _EpisodesDataSource.GetElements().FirstOrDefault(x => x.Id == id);
+            if(episodeToDelete == null)
+            {
+                throw new Exception();
+            }
             await _EpisodesDataSource.RemoveAsync(episodeToDelete);
             await _EpisodesDataSource.SaveChangesAsync();
             return id;

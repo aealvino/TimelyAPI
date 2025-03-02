@@ -1,14 +1,16 @@
 ﻿using Mapster;
 using Models.Entities;
 using Models.DTO;
+using Models.DTO.YourNamespace.DTOs;
 
 namespace SeriesServiceApi.Extensions
 {
-    public static class EpisodeMapping
+    public static class MapsterExtention
     {
         public static void InitMapping(this IApplicationBuilder app)
         {
-            app.AppMapping();
+            app.EpisodesMapping();
+            app.UserMapping();
         }
 
         private static void AppMapping(this IApplicationBuilder app)
@@ -22,6 +24,13 @@ namespace SeriesServiceApi.Extensions
             TypeAdapterConfig<RegistrationModel, AppUser>
                 .NewConfig()
                 .Map(dest => dest.UserName, src => src.Email);
+        }
+        private static void UserMapping(this IApplicationBuilder app)
+        {
+            TypeAdapterConfig<RegistrationDto, AppUser>.NewConfig()
+                .Map(dest => dest.UserName, src => src.Email)
+                .Map(dest => dest.Email, src => src.Email)
+                .Map(dest => dest.PasswordHash, src => src.Password);
         }
     }
 }

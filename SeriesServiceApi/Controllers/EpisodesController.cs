@@ -31,13 +31,13 @@ namespace SeriesServiceApi.Controllers
             return await _episodeService.AddEpisode(episode);
         }
         [HttpPut("update-episodes")]
-        [Authorize]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<int> UpdateEpisode([FromBody] EpisodeDTO episodeDTO)
         {
             return await _episodeService.UpdateEpisode(episodeDTO);
         }
         [HttpDelete("delete-episode")]
-        [Authorize]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<int> DeleteEpisode(int id)
         {
             return await _episodeService.DeleteEpisode(id);

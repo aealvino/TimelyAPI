@@ -17,7 +17,7 @@ namespace Abstraction.Interfaces.DataSourse
         Task<int> AddEpisode(EpisodeDTO episodeDTO);
 
         /// <summary>
-        /// Method for updating a Episode
+        /// Method for updating an Episode
         /// </summary>
         /// <param name="episodeDTO">New series data</param>
         /// <returns>Id of updated episodeDTO</returns>

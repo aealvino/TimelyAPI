@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Models.DTO;
-using Models.Entities;
-using System.Threading.Tasks;
+using Models.DTO.YourNamespace.DTOs;
 
 namespace SeriesServiceApi.Controllers
 {
@@ -15,19 +13,18 @@ namespace SeriesServiceApi.Controllers
         private readonly IUserService _userService;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public UserController(IUserService userService, SignInManager<AppUser> signInManager)
+        public UserController(IUserService userService)
         {
             _userService = userService;
             _signInManager = signInManager;
         }
 
-
-        [HttpPost("Register")]
-        public async Task<int> RegisteredUser([FromBody] RegistrationModel userForRegistration)
+        [HttpPost("register")]
+        public async Task<int> Register([FromBody] RegistrationDto registrationDto)
         {
-            if (userForRegistration == null)
-                throw new Exception("Invalid registration data");
-            var result = await _userService.RegisterUser(userForRegistration);
+            if (registrationDto == null)
+                throw new ArgumentNullException("Registration data is required");
+            var result = await _userService.RegisterUser(registrationDto);
             return result;
         }
 

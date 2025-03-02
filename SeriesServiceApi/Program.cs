@@ -1,19 +1,19 @@
-using DAL.EF;
+
 using SeriesServiceApi.Extensions;
-using SeriesServiceApi.Services;
 using NLog.Web;
-using Microsoft.AspNetCore.Identity;
-using Models.Entities;
-using MapsterMapper;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Abstraction.Interfaces.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
-// Add services to the container.
+builder.Services.AddEntityFramework(builder.Configuration);
+builder.Services.AddDataSourceServices();
+builder.Services.AddBllServices();
+
+builder.Services.AddIdentityServices();
+builder.Services.AddJwtAuthentication(configuration);
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -45,22 +45,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.RequireHttpsMetadata = false;
-        options.Authority = builder.Configuration["JwtSettings:Issuer"];
-        options.Audience = builder.Configuration["JwtSettings:Audience"];
-        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:HelloWorld!"]))
-        };
-    });
-
 builder.Services.AddAuthorization();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
@@ -90,20 +74,24 @@ builder.Services.AddLogger();
 var app = builder.Build();
 
 
-
+using (var scope = app.Services.CreateScope())
+{
+    var seedService = scope.ServiceProvider.GetRequiredService<ISeedService>();
+    await seedService.SeedUsersAndRolesAsync();
+}
 app.AddExceptionHandler();
 app.InitMapping();
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseHttpsRedirection();
 
 app.MapControllers();
 
