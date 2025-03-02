@@ -27,13 +27,15 @@ namespace SeriesServiceApi.Controllers
             var tokens = await _authService.LoginUser(loginDto);
             return tokens;
         }
-        [HttpPost("refresh")]
-        public async Task<AuthResponseDTO> Refresh([FromBody] RefreshRequest request)
-        {
-            if (string.IsNullOrEmpty(request.RefreshToken)) throw new Exception("Null refresh request");
-
-            var response = await _authService.RefreshToken(request.RefreshToken);
-            return response;
-        }
+        //[HttpPost("refresh")]
+        //public async Task<AuthResponseDTO> Refresh([FromBody] RefreshRequest request)
+        //{
+        //    if (string.IsNullOrEmpty(request.RefreshToken))
+        //    {
+        //        throw new ArgumentException("Refresh token is required");
+        //    }
+        //        var tokens = await _authService.RefreshTokenAsync(request.RefreshToken);
+        //    return tokens;
+        //}
     }
 }

@@ -1,8 +1,5 @@
 ﻿using Abstraction.Interfaces.Services;
-using Azure.Core;
-using DAL.Migrations;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Models.DTO;
 using Models.Entities;
@@ -32,37 +29,13 @@ namespace BLL.Services
 
             var roles = await _userManager.GetRolesAsync(user);
             var token = _tokenService.GenerateAccessToken(user, roles);
-            var refreshToken = _tokenService.GenerateRefreshToken();
-
-            await _userManager.SetAuthenticationTokenAsync(user, "Default", "RefreshToken", refreshToken);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
             return new AuthResponseDTO
             {
-                AccessToken = tokenString,
-                RefreshToken = refreshToken
+                AccessToken = tokenString
             };
         }
-        public async Task<AuthResponseDTO> RefreshToken(string refreshToken)
-        {
-            if (string.IsNullOrEmpty(refreshToken))
-                throw new ArgumentException("Refresh token is required");
-
-            var user = _userManager.Users.AsEnumerable()
-               .FirstOrDefault(u => _userManager.GetAuthenticationTokenAsync(u, "Default", "RefreshToken").Result == refreshToken);
-
-            if (user == null) throw new UnauthorizedAccessException("Invalid refresh token");
-
-            var roles = await _userManager.GetRolesAsync(user);
-            var token = _tokenService.GenerateAccessToken(user, roles);
-
-            return new AuthResponseDTO
-            {
-                AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
-                RefreshToken = refreshToken
-            };
-        }
-
     }
 }
