@@ -1,30 +1,49 @@
-using Microsoft.EntityFrameworkCore;
-using DAL.EF;
-using DAL.DataSource;
-using Abstraction.Interfaces.DataSourse;
-using Abstraction.Interfaces.Services;
+
 using SeriesServiceApi.Extensions;
-using SeriesServiceApi.Services;
 using NLog.Web;
+using Abstraction.Interfaces.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
-// Add services to the container.
+builder.Services.AddEntityFramework(builder.Configuration);
+builder.Services.AddDataSourceServices();
+builder.Services.AddBllServices();
+
+builder.Services.AddIdentityServices();
+builder.Services.AddJwtAuthentication(configuration);
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddScoped(typeof(IGenericDataSourse<>), typeof(GenericDataSourse<>));
-builder.Services.AddScoped(typeof(ISeriesDataSourse), typeof(SeriesDataSourse));
-builder.Services.AddScoped<ISeriesService, SeriesService>();
-builder.Services.AddScoped<IEpisodesService, EpisodesService>();
-
-builder.Services.AddDbContext<StreamingServiceDbContext>(
-    options =>
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
-        options.UseSqlite("Data Source=../DatabaseApi.db");
+        Description = "¬ведите JWT токен в формате: Bearer {token}",
+        Name = "Authorization",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
     });
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement()
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = Microsoft.OpenApi.Models.ParameterLocation.Header
+            },
+            new List<string>()
+        }
+    });
+});
 
 builder.Logging.ClearProviders();
 builder.Host.UseNLog();
@@ -33,17 +52,23 @@ builder.Services.AddLogger();
 var app = builder.Build();
 
 
+using (var scope = app.Services.CreateScope())
+{
+    var seedService = scope.ServiceProvider.GetRequiredService<ISeedService>();
+    await seedService.SeedUsersAndRolesAsync();
+}
 app.AddExceptionHandler();
 app.InitMapping();
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
