@@ -26,6 +26,7 @@
 		<ProjectReference Include="..\Abstraction\Abstraction.csproj" />
 		<ProjectReference Include="..\DAL\DAL.csproj" />
 		<ProjectReference Include="..\Models\Models.csproj" />
+		<ProjectReference Include="..\Common\Common.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -9,6 +9,7 @@ using Models.Entities;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
+using Common.Resources;
 
 namespace BLL.Services
 {
@@ -28,7 +29,7 @@ namespace BLL.Services
             var user = await _userManager.FindByEmailAsync(userForLogin.Email);
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, userForLogin.Password))
-                throw new Exception("Invalid email or password");
+                throw new UnauthorizedAccessException(string.Format(ErrorMessages.UserNotFound));
 
             var roles = await _userManager.GetRolesAsync(user);
             var token = _tokenService.GenerateAccessToken(user, roles);
